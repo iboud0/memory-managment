@@ -1,6 +1,6 @@
 from typing import List
 from mmu.models.memory_block import MemoryBlock
-from mmu.strategies.memory_allocation_strategy import MemoryAllocationStrategy
+from mmu.strategy.memory_allocation_strategy import MemoryAllocationStrategy
 
 class MMU:
     def __init__(self, total_memory_size: int, strategy: MemoryAllocationStrategy):

@@ -9,7 +9,7 @@ def main():
     mmu = MMU(10000, BestFitStrategy())
 
     while True:
-        command = input("Enter command: ").split()
+        command = input("> ").split()
         if not command:
             continue
 

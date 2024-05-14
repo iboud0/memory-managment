@@ -1,28 +1,37 @@
 import random
 from typing import List
 from mmu.models.memory_block import MemoryBlock
-from mmu.strategies.memory_allocation_strategy import MemoryAllocationStrategy
+from mmu.strategy.memory_allocation_strategy import MemoryAllocationStrategy
 
 class WorstFitStrategy(MemoryAllocationStrategy):
-    def allocate_memory(self, amount: int, memory_blocks: List[MemoryBlock]) -> MemoryBlock:
-        worst_fit = None
-        max_size = 0
+    def allocate_memory(self, amount: int, memory_blocks: List[MemoryBlock]) -> int:
+        available_spaces = []
+        current_space = 0
+        block_size = memory_blocks[0].size
 
-        for block in memory_blocks:
-            if block.is_free and block.limit >= amount and block.limit > max_size:
-                worst_fit = block
-                max_size = block.limit
+        # Look for available spaces in memory
+        for index, block in enumerate(memory_blocks):
+            if block.is_free:
+                current_space += block.size
+            if not block.is_free or block == memory_blocks[-1]:
+                if block == memory_blocks[-1]:
+                    if current_space >= amount:
+                        print(index)
+                        available_spaces.append((index + 1 - current_space // block_size, current_space))
+                    current_space = 0
+                else:
+                    if current_space >= amount:
+                        print(index)
+                        available_spaces.append((index - current_space // block_size, current_space))
+                    current_space = 0
+                    
+        if not available_spaces:
+            return -1, None # No suitable space found for allocation
 
-        if worst_fit is not None:
-            worst_fit.is_free = False
-            worst_fit.set_process_id(random.randint(0, 10000))
+        worst_fit = max(available_spaces, key=lambda x: x[1])
+        allocated_mem_slots = amount // block_size
 
-        return worst_fit
+        for i in range(allocated_mem_slots):
+            memory_blocks[worst_fit[0] + i].is_free = False
 
-    def free_memory(self, process_id: int, memory_blocks: List[MemoryBlock]) -> bool:
-        for block in memory_blocks:
-            if block.process_id == process_id and not block.is_free:
-                block.is_free = True
-                block.set_process_id(-1)
-                return True
-        return False
+        return worst_fit[0], amount

@@ -1,8 +1,8 @@
 class Process:
-    def __init__(self, process_id, base, limit):
+    def __init__(self, process_id):
         self._process_id = process_id
-        self._base = base
-        self._limit = limit
+        self._base = -1
+        self._limit = -1
 
     @property
     def process_id(self):

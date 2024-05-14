@@ -1,3 +1,4 @@
+import re
 import random
 from typing import List
 from mmu.mmu import MMU
@@ -8,10 +9,15 @@ from mmu.strategy.next_fit import NextFitStrategy
 from mmu.strategy.worst_fit import WorstFitStrategy
 
 def main():
-    print("Initializing MMU with 10000KB of memory and Best Fit strategy...")
+    def format_class_name(class_name):
+        return ' '.join(word.lower() for word in re.findall('[A-Z][a-z]*', class_name))
+    
+    mem_size = 20
+    strategy = NextFitStrategy()
     process_table: List[Process] = []
-    mmu = MMU(20, FirstFitStrategy(), process_table)
-
+    mmu = MMU(mem_size, strategy, process_table)
+    print(f"Initializing MMU with {mem_size}KB of memory and {format_class_name(strategy.__class__.__name__)}...")
+    
     while True:
         command = input("> ").split()
         if not command:

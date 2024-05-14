@@ -1,10 +1,32 @@
-import random
 from typing import List
 from mmu.models.memory_block import MemoryBlock
 from mmu.strategy.memory_allocation_strategy import MemoryAllocationStrategy
 
 class WorstFitStrategy(MemoryAllocationStrategy):
+    """
+    A memory allocation strategy that allocates memory using the Worst Fit algorithm.
+
+    Attributes:
+        None
+
+    Methods:
+        allocate_memory(self, amount: int, memory_blocks: List[MemoryBlock]) -> int:
+            Allocates memory using the Worst Fit algorithm.
+
+    """
+
     def allocate_memory(self, amount: int, memory_blocks: List[MemoryBlock]) -> int:
+        """
+        Allocates memory using the Worst Fit algorithm.
+
+        Args:
+            amount (int): The amount of memory to allocate.
+            memory_blocks (List[MemoryBlock]): List of MemoryBlock objects representing available memory blocks.
+
+        Returns:
+            Tuple[int, int]: A tuple containing the index of the allocated memory block and the allocated memory size.
+                             If no suitable space is found for allocation, returns (-1, None).
+        """
         available_spaces = []
         current_space = 0
         block_size = memory_blocks[0].size
@@ -29,6 +51,7 @@ class WorstFitStrategy(MemoryAllocationStrategy):
         worst_fit = max(available_spaces, key=lambda x: x[1])
         allocated_mem_slots = amount // block_size
 
+        # Mark allocated memory slots as occupied
         for i in range(allocated_mem_slots):
             memory_blocks[worst_fit[0] + i].is_free = False
 

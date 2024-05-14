@@ -10,7 +10,7 @@ from mmu.strategy.worst_fit import WorstFitStrategy
 def main():
     print("Initializing MMU with 10000KB of memory and Best Fit strategy...")
     process_table: List[Process] = []
-    mmu = MMU(10000, BestFitStrategy(), process_table)
+    mmu = MMU(20, FirstFitStrategy(), process_table)
 
     while True:
         command = input("> ").split()

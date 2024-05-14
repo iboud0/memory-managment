@@ -16,12 +16,10 @@ class BestFitStrategy(MemoryAllocationStrategy):
             if not block.is_free or block == memory_blocks[-1]:
                 if block == memory_blocks[-1]:
                     if current_space >= amount:
-                        print(index)
                         available_spaces.append((index + 1 - current_space // block_size, current_space))
                     current_space = 0
                 else:
                     if current_space >= amount:
-                        print(index)
                         available_spaces.append((index - current_space // block_size, current_space))
                     current_space = 0
                     

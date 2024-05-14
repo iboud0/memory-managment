@@ -1,3 +1,4 @@
+import math
 from typing import List
 from mmu.models.memory_block import MemoryBlock
 from mmu.strategy.memory_allocation_strategy import MemoryAllocationStrategy
@@ -77,7 +78,7 @@ class NextFitStrategy(MemoryAllocationStrategy):
                 return -1, None # No suitable space found for allocation
 
         next_fit = available_space
-        allocated_mem_slots = amount // block_size
+        allocated_mem_slots = math.ceil(amount / block_size)
         # Update the starting index for the next iteration
         if (next_fit[0] + allocated_mem_slots == len(memory_blocks)):
             self.next = 0

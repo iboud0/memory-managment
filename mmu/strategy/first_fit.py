@@ -1,3 +1,4 @@
+import math
 from typing import List
 from mmu.models.memory_block import MemoryBlock
 from mmu.strategy.memory_allocation_strategy import MemoryAllocationStrategy
@@ -48,7 +49,7 @@ class FirstFitStrategy(MemoryAllocationStrategy):
             return -1, None # No suitable space found for allocation
 
         first_fit = available_space
-        allocated_mem_slots = amount // block_size
+        allocated_mem_slots = math.ceil(amount / block_size)
 
         # Mark allocated memory slots as occupied
         for i in range(allocated_mem_slots):

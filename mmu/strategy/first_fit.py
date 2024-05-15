@@ -40,10 +40,12 @@ class FirstFitStrategy(MemoryAllocationStrategy):
                 if block == memory_blocks[-1]:
                     if current_space >= amount:
                         available_space = (index + 1 - current_space // block_size, current_space)
+                    current_space = 0
                 else:
                     if current_space >= amount:
                         available_space = (index - current_space // block_size, current_space)
                         break
+                    current_space = 0
                     
         if not available_space:
             return -1, None # No suitable space found for allocation

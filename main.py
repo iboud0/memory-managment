@@ -14,7 +14,7 @@ def main():
     """
     
     # Initialize memory size and strategy
-    mem_size = 20
+    mem_size = 4
     strategy = NextFitStrategy()  # Change the strategy here if needed
 
     # Initialize process table and MMU

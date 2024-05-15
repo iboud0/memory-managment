@@ -52,10 +52,12 @@ class NextFitStrategy(MemoryAllocationStrategy):
                 if block == memory_blocks[-1]:
                     if current_space >= amount:
                         available_space = (index + self.next + 1 - current_space // block_size, current_space)
+                    current_space = 0
                 else:
                     if current_space >= amount:
                         available_space = (index + self.next - current_space // block_size, current_space)
                         break
+                    current_space = 0
         
         if not available_space:
             current_space = 0
@@ -68,22 +70,26 @@ class NextFitStrategy(MemoryAllocationStrategy):
                         if block == memory_blocks[-1]:
                             if current_space >= amount:
                                 available_space = (index + 1 - current_space // block_size, current_space)
+                            current_space = 0
                         else:
                             if current_space >= amount:
                                 available_space = (index - current_space // block_size, current_space)
                                 break
+                            current_space = 0
                 if not available_space:
                     return -1, None # No suitable space found for allocation
             else:
                 return -1, None # No suitable space found for allocation
 
         next_fit = available_space
+        print(next_fit)
         allocated_mem_slots = math.ceil(amount / block_size)
         # Update the starting index for the next iteration
         if (next_fit[0] + allocated_mem_slots == len(memory_blocks)):
             self.next = 0
         else:
             self.next = next_fit[0] + allocated_mem_slots
+        print(self.next)
 
         # Mark allocated memory slots as occupied
         for i in range(allocated_mem_slots):
